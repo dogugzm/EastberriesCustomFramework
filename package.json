@@ -1,0 +1,11 @@
+{
+  "name": "com.eastberries.firestoreservice",
+  "version": "1.0.0",
+  "displayName": "Firestore Service",
+  "description": "Firebase firestore helper for Unity.",
+  "unity": "2022.3",
+  "author": {
+    "name": "Dogukan Gozum",
+    "email": "dogukangozum@gmail.com"
+  }
+}
