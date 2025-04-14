@@ -7,8 +7,9 @@ namespace FirebaseService
         public T? Data { get; set; }
         public string? ErrorMessage { get; set; }
 
-        public static FirebaseResult<T> Success(T data) => new FirebaseResult<T> { IsSuccess = true, Data = data };
-        public static FirebaseResult<T> Failure(string errorMessage) => new FirebaseResult<T> { IsSuccess = false, ErrorMessage = errorMessage };
-    }
+        public static FirebaseResult<T> Success(T data) => new() { IsSuccess = true, Data = data };
 
+        public static FirebaseResult<T> Failure(string errorMessage) =>
+            new() { IsSuccess = false, ErrorMessage = errorMessage };
+    }
 }

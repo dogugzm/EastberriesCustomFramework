@@ -1,7 +1,11 @@
 {
     "name": "FirebaseService",
     "rootNamespace": "FirebaseService",
-    "references": [],
+    "references": [
+        "VContainer",
+        "LoadingService",
+        "UniTask"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

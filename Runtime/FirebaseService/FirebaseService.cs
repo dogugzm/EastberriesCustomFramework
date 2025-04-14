@@ -3,17 +3,21 @@ using Firebase.Firestore;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Assets.Scripts.LoadingService;
+using Cysharp.Threading.Tasks;
+using VContainer;
 
 namespace FirebaseService
 {
     public class FirebaseService : IFirebaseService
     {
-       
+        [Inject] private readonly Assets.Scripts.LoadingService.LoadingService _loadingService;
 
-        public async Task<FirebaseResult<List<T>>> GetDataFromCollectionAsync<T>(string collectionName)
+        public async UniTask<FirebaseResult<List<T>>> GetDataFromCollectionAsync<T>(string collectionName)
         {
             try
             {
+                _loadingService.StartUniTask();
                 var snapshot = await FirebaseFirestore.DefaultInstance
                     .Collection(collectionName)
                     .GetSnapshotAsync();
@@ -33,12 +37,18 @@ namespace FirebaseService
                 Debug.LogError($"Error fetching data from Firebase: {ex.Message}");
                 return FirebaseResult<List<T>>.Failure($"Error fetching data from Firebase: {ex.Message}");
             }
+            finally
+            {
+                _loadingService.CompleteUniTask();
+            }
         }
 
-        public async Task<FirebaseResult<T>> GetDataByIdAsync<T>(string collectionName, string id)
+        public async UniTask<FirebaseResult<T>> GetDataByIdAsync<T>(string collectionName, string id)
         {
             try
             {
+                _loadingService.StartUniTask();
+
                 var snapshot = await FirebaseFirestore.DefaultInstance
                     .Collection(collectionName)
                     .Document(id)
@@ -46,7 +56,8 @@ namespace FirebaseService
 
                 if (!snapshot.Exists)
                 {
-                    return FirebaseResult<T>.Failure($"Document with ID {id} does not exist in collection {collectionName}.");
+                    return FirebaseResult<T>.Failure(
+                        $"Document with ID {id} does not exist in collection {collectionName}.");
                 }
 
                 var data = snapshot.ConvertTo<T>();
@@ -54,15 +65,20 @@ namespace FirebaseService
             }
             catch (Exception ex)
             {
-                Debug.LogError($"Error fetching data from Firebase: {ex.Message}");
                 return FirebaseResult<T>.Failure($"Error fetching data from Firebase: {ex.Message}");
+            }
+            finally
+            {
+                _loadingService.CompleteUniTask();
             }
         }
 
-        public async Task<FirebaseResult<bool>> SetDataAsync<T>(T data, string collectionName, string id)
+        public async UniTask<FirebaseResult<bool>> SetDataAsync<T>(T data, string collectionName, string id)
         {
             try
             {
+                _loadingService.StartUniTask();
+
                 await FirebaseFirestore.DefaultInstance
                     .Collection(collectionName)
                     .Document(id)
@@ -75,12 +91,18 @@ namespace FirebaseService
                 Debug.LogError($"Error setting data to Firebase: {ex.Message}");
                 return FirebaseResult<bool>.Failure($"Error setting data to Firebase: {ex.Message}");
             }
+            finally
+            {
+                _loadingService.CompleteUniTask();
+            }
         }
 
-        public async Task<FirebaseResult<bool>> CreateDataAsync<T>(T data, string collectionName)
+        public async UniTask<FirebaseResult<bool>> CreateDataAsync<T>(T data, string collectionName)
         {
             try
             {
+                _loadingService.StartUniTask();
+
                 await FirebaseFirestore.DefaultInstance
                     .Collection(collectionName)
                     .AddAsync(data);
@@ -92,16 +114,24 @@ namespace FirebaseService
                 Debug.LogError($"Error creating data on Firebase: {ex.Message}");
                 return FirebaseResult<bool>.Failure($"Error creating data on Firebase: {ex.Message}");
             }
+            finally
+            {
+                _loadingService.CompleteUniTask();
+            }
         }
 
-        public async Task<FirebaseResult<bool>> UpdateDataAsync(string collectionName, string id, Dictionary<string, object> newData)
+        public async UniTask<FirebaseResult<bool>> UpdateDataAsync(string collectionName, string id,
+            Dictionary<string, object> newData)
         {
             try
             {
+                _loadingService.StartUniTask();
+
                 await FirebaseFirestore.DefaultInstance
                     .Collection(collectionName)
                     .Document(id)
                     .UpdateAsync(newData);
+
 
                 return FirebaseResult<bool>.Success(true);
             }
@@ -109,6 +139,10 @@ namespace FirebaseService
             {
                 Debug.LogError($"Error updating data on Firebase: {ex.Message}");
                 return FirebaseResult<bool>.Failure($"Error updating data on Firebase: {ex.Message}");
+            }
+            finally
+            {
+                _loadingService.CompleteUniTask();
             }
         }
     }
