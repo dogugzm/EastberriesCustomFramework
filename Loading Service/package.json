@@ -1,0 +1,11 @@
+﻿{
+  "name": "com.eastberries.loadingservice",
+  "version": "1.0.0",
+  "displayName": "Loading Service",
+  "description": "Loading service for Unity. It provides a simple way to show loading screens and manage loading states in your game.",
+  "unity": "2022.3",
+  "author": {
+    "name": "Dogukan Gozum",
+    "email": "dogukangozum@gmail.com"
+  }
+}
