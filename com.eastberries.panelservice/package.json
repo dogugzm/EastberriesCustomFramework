@@ -1,0 +1,11 @@
+﻿{
+  "name": "com.eastberries.panelservice",
+  "version": "1.0.0",
+  "displayName": "Panel Service",
+  "description": "Panel service for Unity. It provides a simple way to manage UI panels and transitions in your game.",
+  "unity": "2022.3",
+  "author": {
+    "name": "Dogukan Gozum",
+    "email": "dogukangozum@gmail.com"
+  }
+}
