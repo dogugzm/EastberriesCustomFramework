@@ -1,0 +1,11 @@
+﻿{
+  "name": "com.eastberries.helpers",
+  "version": "1.0.0",
+  "displayName": "Helpers",
+  "description": " A collection of helper classes and utilities for Unity development. This package includes various utility functions, extensions, and other helpful tools to streamline your Unity projects.",
+  "unity": "2022.3",
+  "author": {
+    "name": "Dogukan Gozum",
+    "email": "dogukangozum@gmail.com"
+  }
+}
