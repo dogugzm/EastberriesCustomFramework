@@ -186,7 +186,7 @@ namespace MockDataSystem
                     throw new ArgumentException("NestedMockAttribute requires a class or struct type.");
                 }
 
-                // MockGenerator tarafından işlenecek
+                // MockGenerator will handle
                 return null;
             }
         }

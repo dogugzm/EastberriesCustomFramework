@@ -69,20 +69,17 @@ namespace MockDataSystem
 
             if (mockAttr is CustomAttributes.NestedMockAttribute && generatedValue == null)
             {
-                // Recursive class veya struct check
                 if (memberType.IsClass ||
                     (memberType.IsValueType && !memberType.IsPrimitive && memberType != typeof(string)))
                 {
                     var generateMethod = typeof(MockGenerator).GetMethod(nameof(Generate), new[] { typeof(int) })
-                        .MakeGenericMethod(memberType);
+                        ?.MakeGenericMethod(memberType);
                     try
                     {
                         value = generateMethod.Invoke(this, new object[] { recursionDepth + 1 });
 
-                        // Struct veya class için değerin gerçekten üretildiğini doğrula
                         if (value != null || memberType.IsValueType)
                         {
-                            // Struct'ın alanlarını döngüyle kontrol et
                             bool isFilled = false;
                             var fields = memberType.GetFields(BindingFlags.Public | BindingFlags.NonPublic |
                                                               BindingFlags.Instance);
@@ -101,8 +98,8 @@ namespace MockDataSystem
                             if (!isFilled)
                             {
                                 Debug.LogWarning(
-                                    $"NestedMockAttribute on {memberInfo.Name} produced an empty struct for type {memberType.Name}. Fields may lack valid mock attributes.");
-                                value = Activator.CreateInstance(memberType); // Boş struct yerine yeni bir instance
+                                    $"NestedMockAttribute on {memberInfo.Name} produced an empty struct check fields.");
+                                value = Activator.CreateInstance(memberType); // new instance
                                 return false;
                             }
 
